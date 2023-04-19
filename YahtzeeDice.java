@@ -5,14 +5,12 @@ import javax.xml.namespace.QName;
 // dice 
 public class YahtzeeDice {
     private static ArrayList<Integer> keep = new ArrayList<Integer>();
-    private static int[] dice = {6, 6, 6, 6, 6};
+    private static int[] dice = {5, 2, 5, 5, 2};
 
     public static void main(String[] args){
         printDice();
-        
-        printDice();
 
-        System.out.println(calcFourKind());
+        System.out.println(calcFullHouse());
     }
 
     public static void keepDice(int index){
@@ -89,6 +87,34 @@ public class YahtzeeDice {
             
         return 0;
     }
+
+    public static int calcFullHouse(){
+        int total = 0;
+        int count = 0;
+        int count2 = 0;
+        int temp = 0;
+
+        for (int i : dice){
+            if (i == dice[0]){
+                count += 1;
+            } else temp = i; 
+            total += i;
+        }
+        // if its not a full house, no score
+        if (count == 1 || count >= 4){
+            return 0;
+        } 
+        for (int j : dice){
+            if (j == temp){
+                count2 += 1;
+            }
+        }
+        if (count2 + count == 5){
+            return total;
+        } else return 0;
+    }
+
+    
 
     public ArrayList<Integer> getKeep(){
         return keep;
