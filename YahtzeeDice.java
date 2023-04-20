@@ -3,7 +3,7 @@ import java.util.ArrayList;
 // dice 
 public class YahtzeeDice {
     private static ArrayList<Integer> keep = new ArrayList<Integer>();
-    private static int[] dice = {2, 1, 2, 2, 2};
+    private static int[] dice = {6, 6, 6, 6, 6};
 
     public static void main(String[] args){
         printDice();
@@ -12,7 +12,11 @@ public class YahtzeeDice {
     }
 
     public static void keepDice(int index){
-        keep.add(index);
+        // unselect the dice 
+        if (keep.contains(index)){
+            keep.remove(index);
+        // select the dice
+        } else keep.add(index);
     }
 
     public static void resetKeep(int index){

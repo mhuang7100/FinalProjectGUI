@@ -50,7 +50,7 @@ public class ScoreBoard extends JFrame {
     public void createBoard(){
         // Frame
         JFrame frame = new JFrame();        
-        frame.setTitle("Add Image"); 
+        frame.setTitle("Yahtzee!"); 
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1920,1080);
@@ -70,6 +70,7 @@ public class ScoreBoard extends JFrame {
         JLabel top = new JLabel(icon2);
         Dimension size2 = top.getPreferredSize(); //Gets the size of the image
         top.setBounds(250, 0, size2.width, size2.height); //Sets the location of the image
+
         // buttons
         int x = size1.width;
         int y = 112;
@@ -115,6 +116,8 @@ public class ScoreBoard extends JFrame {
         frame.add(left);
         frame.add(top);
   
+        DiceInterface.setFrame(frame);
+        DiceInterface.createDice();
         //p1.button(frame);
 
         frame.setVisible(true);
