@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import javax.swing.JButton;
 
 // dice 
 public class YahtzeeDice {
     private static ArrayList<Integer> keep = new ArrayList<Integer>();
     private static int[] dice = {6, 6, 6, 6, 6};
+    private static int rollsRemaining = 3;
 
     public static void main(String[] args){
         printDice();
@@ -11,23 +13,43 @@ public class YahtzeeDice {
         System.out.println(calcYahtzee());
     }
 
-    public static void keepDice(int index){
+    // add/remove dice from being kept, also highlights/unhighlights
+    public static void keepDice(int index, JButton dice){
         // unselect the dice 
         if (keep.contains(index)){
-            keep.remove(index);
+            keep.remove(Integer.valueOf(index));
+            dice.setBorderPainted(false);
         // select the dice
-        } else keep.add(index);
+        } else {
+            keep.add(index);
+            dice.setBorderPainted(true);
+        }
     }
 
-    public static void resetKeep(int index){
+    public static void resetKeep(){
         keep.removeAll(keep);
+    }
+
+    public static void resetRolls(){
+        rollsRemaining = 0;
     }
 
     // rolls the dice that were not selected to be retained
     public static void roll(){
-        for (int i = 0; i < 5; i++){
-            if (!keep.contains(i)){
-                dice[i] = (int) (Math.random() * 6) + 1;
+        if (rollsRemaining > 0){
+            for (int i = 0; i < 5; i++){
+                if (!keep.contains(i)){
+                    int newNum = (int) (Math.random() * 6) + 1;
+                    dice[i] = newNum;
+                    DiceInterface.changeDiceImg(i, newNum - 1);
+                }
+            }
+            rollsRemaining -= 1;
+            if (rollsRemaining == 0){
+                JButton roll = DiceInterface.getRollBtn();
+                roll.setText("No more rolls!");
+                int btnL = 140;
+                roll.setBounds(roll.getBounds().x + 40 - btnL / 2, roll.getBounds().y, btnL, 50); 
             }
         }
     }
