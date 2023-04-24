@@ -26,8 +26,7 @@ public class DiceInterface{
             final int num = i; // used to record which die it is
             // gets the corresponding image of the dice that was rolled
             JButton dice = new JButton(diceImages.get(YahtzeeDice.getDice()[i] - 1));  
-            Dimension diceSize = dice.getPreferredSize(); //Gets the size of the image
-            dice.setBounds(x, y, 145, 145); //Sets the location of the image
+            dice.setBounds(x, y, 145, 145); // 145 is the sidelength of the dice
             dice.setBorderPainted(false);
             dice.setContentAreaFilled(false);
             dice.setBorder(BorderFactory.createLineBorder(Color.red, 4));
@@ -48,9 +47,9 @@ public class DiceInterface{
             x += 145;
         }
         
-        int btnL = 80;
-        roll = new JButton("Roll");  
-        roll.setBounds(x - 145 - btnL / 2, y + 220, 80, 50); 
+        int btnL = 180;
+        roll = new JButton("Rolls Remaining: " + 3);  
+        roll.setBounds(x - 145 - btnL / 2, y + 220, btnL, 50); 
         roll.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
                 YahtzeeDice.roll();
@@ -75,5 +74,10 @@ public class DiceInterface{
     public static JButton getRollBtn(){
         return roll;
     }
+
+    public static void updateRollBtn(){
+        roll.setText("Rolls Remaining: " + Integer.toString(YahtzeeDice.getRolls()));
+    }
+
 
 }
