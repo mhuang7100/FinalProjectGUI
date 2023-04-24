@@ -29,14 +29,16 @@ public class YahtzeeDice {
     // add/remove dice from being kept, also highlights/unhighlights
     public static void keepDice(int index, JButton dice){
         // unselect the dice 
-        if (keep.contains(index)){
-            keep.remove(Integer.valueOf(index));
-            dice.setBorderPainted(false);
-        // select the dice
-        } else {
-            keep.add(index);
-            dice.setBorderPainted(true);
-        }
+        if (rollsRemaining != 3){
+            if (keep.contains(index)){
+                keep.remove(Integer.valueOf(index));
+                dice.setBorderPainted(false);
+            // select the dice
+            } else {
+                keep.add(index);
+                dice.setBorderPainted(true);
+            }
+        }   
     }
 
     public static void resetKeep(){
@@ -57,6 +59,7 @@ public class YahtzeeDice {
     // rolls the dice that were not selected to be retained
     public static void roll(){
         if (rollsRemaining > 0){
+            canScore = true;
             for (int i = 0; i < 5; i++){
                 if (!keep.contains(i)){
                     int newNum = (int) (Math.random() * 6) + 1;

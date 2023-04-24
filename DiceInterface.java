@@ -48,7 +48,7 @@ public class DiceInterface{
         }
         
         int btnL = 180;
-        roll = new JButton("Rolls Remaining: " + 3);  
+        roll = new JButton("Rolls Remaining: " + 2);  
         roll.setBounds(x - 145 - btnL / 2, y + 220, btnL, 50); 
         roll.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
