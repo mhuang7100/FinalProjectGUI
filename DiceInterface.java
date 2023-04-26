@@ -20,6 +20,7 @@ public class DiceInterface{
     private static JButton roll;
 
     public static void createDice(){
+        fiveDice.clear();
         int x = 1300;
         int y = 400;
         for (int i = 0; i < 5; i++){

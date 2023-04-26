@@ -4,14 +4,18 @@ import javax.swing.JButton;
 // dice 
 public class YahtzeeDice {
     private static ArrayList<Integer> keep = new ArrayList<Integer>();
-    private static int[] dice = {2, 3, 4, 5, 5};
-    private static int rollsRemaining = 2;
+    private static int[] dice = {5, 6, 4, 2, 1};
+    private static int rollsRemaining = 3;
     private static boolean canScore = false;
 
     public static void main(String[] args){
-        printDice();
+        //System.out.println(calcSmStraight());
+    }
 
-        System.out.println(calcYahtzee());
+    public void reset(){
+        rollsRemaining = 3;
+        resetKeep();
+        canScore = false;
     }
 
     public static void setRollsRemaining(int i){
@@ -162,6 +166,7 @@ public class YahtzeeDice {
         // gets the 2 minimum values
         for (int i : dice){
             if (i < min){
+                minNext = min;
                 min = i;
             } else if (i < minNext){
                 minNext = i;
@@ -171,6 +176,7 @@ public class YahtzeeDice {
             for (int j : dice){
                 if (j == min + count){
                     count += 1;
+                    break;
                 }
             }
             if (count != i){
@@ -186,6 +192,7 @@ public class YahtzeeDice {
                 for (int j : dice){
                     if (j == minNext + count){
                         count += 1;
+                        break;
                     }
                 }
                 if (count != i){
