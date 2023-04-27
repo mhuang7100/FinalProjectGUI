@@ -6,28 +6,17 @@ import javax.swing.JFrame;
 
 
 public class ScoreBoardMultiplayer extends ScoreBoard{
-    private ScoreBoard p2;
-    boolean myTurn;
+    private ScoreBoardMultiplayer p2;
 
     public ScoreBoardMultiplayer(){
         super();
-        myTurn = true;
+        setTurn(true);
     }
 
-    public void setPlayer2(ScoreBoard p){
+    public void setPlayer2(ScoreBoardMultiplayer p){
         p2 = p;
     }
 
-    public void switchTurn(){
-        if (myTurn){
-            myTurn = false;
-        } else myTurn = true;
-    }
-
-    public void setTurn(boolean bool){
-        myTurn = bool;
-    }
-    
     public void createBtnReset(JFrame f){
         JButton reset = new JButton("RESTART");
         reset.setBounds(900, 970, 150, 20);
@@ -42,7 +31,7 @@ public class ScoreBoardMultiplayer extends ScoreBoard{
                 YahtzeeDice.setCanScore(false);
                 
 
-                ScoreBoard one = new ScoreBoard();
+                ScoreBoardMultiplayer one = new ScoreBoardMultiplayer();
                 one.createFrame();
                 ScoreBoard2 two = new ScoreBoard2(one.getFrame(), one);
                 one.setPlayer2(two);
@@ -56,7 +45,7 @@ public class ScoreBoardMultiplayer extends ScoreBoard{
 
     public void updateScTotal(){
         super.updateScTotal();
-        myTurn = false;
+        setTurn(false);
         p2.setTurn(true);
     }
 

@@ -29,6 +29,9 @@ public class ScoreBoard{
     private int sectionsLeft;
     private int sectionsLeftUp;
 
+    private int x; // position of the score card
+    private boolean myTurn;
+
     public ScoreBoard(){
         sectionsLeft = 13;
         sectionsLeftUp = 6;
@@ -38,13 +41,28 @@ public class ScoreBoard{
         bonus = 0;
         totalScLow = 0;
         Ybonus = 0;
+        x = 0;
+        myTurn = true;
     }
-    public static void main(String[] args) {
-        System.out.print("\033[H\033[2J");
-        ScoreBoard p1 = new ScoreBoard();
-        p1.createFrame();
-        p1.createBoard();
-        p1.createBtnReset(p1.frame);
+
+    public JFrame getFrame(){
+        return frame;
+    }
+
+    public void setFrame(JFrame f){
+        frame = f;
+    }
+
+    public void setX(int n){
+        x = n;
+    }
+
+    public void setTurn(boolean b){
+        myTurn = b;
+    }
+
+    public boolean getTurn(){
+        return myTurn;
     }
 
     // uses RECURSION to create new buttons and a new frame when the "restart" button is pressed
@@ -61,12 +79,11 @@ public class ScoreBoard{
                 YahtzeeDice.setCanScore(false);
                 
 
-                ScoreBoard sc = new ScoreBoard();
-                sc.createFrame();
-                sc.createBoard();
-                createBtnReset(sc.frame);
-
-
+                ScoreBoard one = new ScoreBoard();
+                one.createFrame();
+                one.createBoard();        
+                one.createDiceBtn();
+                one.createBtnReset(one.getFrame());
             }
         });
     }
@@ -82,21 +99,18 @@ public class ScoreBoard{
     }
 
     public void createBoard(){
-        // Frame
 
-        final TextField tf = new TextField();  
-        tf.setBounds(1000,500, 150,20);  
         // labels
         ImageIcon icon = new ImageIcon("/workspace/FinalProjectGUI/yahtzeeLEFT.jpg");
         ImageIcon icon2 = new ImageIcon("/workspace/FinalProjectGUI/yahtzeeTop.jpg");
         //left image
         JLabel left = new JLabel(icon);
         Dimension size1 = left.getPreferredSize(); //Gets the size of the image
-        left.setBounds(0, 0, size1.width, size1.height); //Sets the location of the image
+        left.setBounds(x, 0, size1.width, size1.height); //Sets the location of the image
         // top image
         JLabel top = new JLabel(icon2);
         Dimension size2 = top.getPreferredSize(); //Gets the size of the image
-        top.setBounds(250, 0, size2.width, size2.height); //Sets the location of the image
+        top.setBounds(x + 250, 0, size2.width, size2.height); //Sets the location of the image
 
         // sets up labels
         labelScoreUp1 = new JLabel(Integer.toString(totalScUp));
@@ -109,7 +123,7 @@ public class ScoreBoard{
 
 
         // buttons
-        int x = size1.width;
+        x += size1.width;
         int y = 112;
         int BWidth = 41;
         int BLength = 53;
@@ -122,7 +136,7 @@ public class ScoreBoard{
             button1.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){                     
                     // if the button has not been pressed
-                    if (button1.getLabel().equals("score") && YahtzeeDice.getCanScore() == true){
+                    if (button1.getLabel().equals("score") && YahtzeeDice.getCanScore() && myTurn){
                         int tempScore = getScoreUpper(temp);  
                         totalScUp += tempScore;
                         totalScore += tempScore;
@@ -169,7 +183,7 @@ public class ScoreBoard{
             button1.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){                     
                     // if the button has not been pressed
-                    if (button1.getLabel().equals("score") && YahtzeeDice.getCanScore() == true){
+                    if (button1.getLabel().equals("score") && YahtzeeDice.getCanScore() && myTurn){
                         int tempScore = getScoreLower(temp);  
                         totalScLow += tempScore;
                         totalScore += tempScore;
@@ -215,7 +229,11 @@ public class ScoreBoard{
         frame.add(labelScoreUp);
         frame.add(labelScoreLow);
         frame.add(labelScoreTotal);
-        
+
+        frame.setVisible(true);
+    }
+
+    public void createDiceBtn(){
         Button firstRoll = new Button("Roll!");  
         firstRoll.setBounds(1427, 765, 180, 50); 
         frame.add(firstRoll);
@@ -227,10 +245,6 @@ public class ScoreBoard{
                 YahtzeeDice.roll();
             }
         });
-        
-        //p1.button(frame);
-
-        frame.setVisible(true);
     }
 
     public int getScoreUpper(int btnNum){
@@ -256,6 +270,10 @@ public class ScoreBoard{
         return 0;
     }
 
+    public int getTotalScore(){
+        return totalScore;
+    }
+
     public void setScoreUp(int n){
         totalScUp = n;
         labelScoreUp.setText(Integer.toString(n));
@@ -278,10 +296,13 @@ public class ScoreBoard{
     public void updateScUp(){
         labelScoreUp1.setText(Integer.toString(totalScUp));
         labelScoreUp.setText(Integer.toString(totalScUp));
+        
         // calculates bonus if upper section is finished
-        if (sectionsLeftUp == 0 && totalScUp >= 63){
-            updateBonus();
-        }
+        if (sectionsLeftUp == 0){
+            if (totalScUp >= 63){
+                updateBonus();
+            } else labelScoreUp2.setText(Integer.toString(totalScUp));
+        } else updateScTotal();
     }
 
     public void updateScLow(){
