@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import javax.swing.JButton;
 
-// dice 
+// controls the values of the dice and their calculations 
 public class YahtzeeDice {
     private static ArrayList<Integer> keep = new ArrayList<Integer>();
     private static int[] dice = {5, 6, 4, 2, 1};
@@ -78,6 +78,7 @@ public class YahtzeeDice {
         }
     }
 
+    // calculate the score of any upper section (based on which number it is)
     public static int calcUpper(int num){
         int total = 0;
         for (int i : dice){
@@ -234,6 +235,7 @@ public class YahtzeeDice {
         return score;
     }
 
+    // returns score of Yahtzee
     public static int calcYahtzee(){
         int score = 50; 
         for (int i : dice){
@@ -244,6 +246,7 @@ public class YahtzeeDice {
         return score;
     }
 
+    // returns score of chance (plain sum of all die)
     public static int calcChance(){
         int score = 0;
         for (int i : dice){

@@ -6,19 +6,23 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+// buttons and images of the dice
 public class DiceInterface{
     private static Frame frame;
+    // images of the individual die
     private final static ImageIcon iconOne = new ImageIcon("/workspace/FinalProjectGUI/Dice1.jpg");
     private final static ImageIcon iconTwo = new ImageIcon("/workspace/FinalProjectGUI/Dice2.jpg");
     private final static ImageIcon iconThree = new ImageIcon("/workspace/FinalProjectGUI/Dice3.jpg");
     private final static ImageIcon iconFour = new ImageIcon("/workspace/FinalProjectGUI/Dice4.jpg");
     private final static ImageIcon iconFive = new ImageIcon("/workspace/FinalProjectGUI/Dice5.jpg");
     private final static ImageIcon iconSix = new ImageIcon("/workspace/FinalProjectGUI/Dice6.jpg");
+    // arraylist that stores the die images
     private static ArrayList<ImageIcon> diceImages = new ArrayList<ImageIcon>(Arrays.asList(
         iconOne, iconTwo, iconThree, iconFour, iconFive, iconSix));
-    private static ArrayList<JButton> fiveDice = new ArrayList<JButton>();
-    private static JButton roll;
+    private static ArrayList<JButton> fiveDice = new ArrayList<JButton>();  // contains the buttons that represent the 5 die
+    private static JButton roll;    // roll button
 
+    // creates the die images and buttons 
     public static void createDice(){
         fiveDice.clear();
         int x = 1300;
@@ -48,8 +52,9 @@ public class DiceInterface{
             x += 145;
         }
         
+        // roll button, rolls dice when clicked
         int btnL = 180;
-        roll = new JButton("Rolls Remaining: " + 2);  
+        roll = new JButton("Rolls Remaining: " + 2);
         roll.setBounds(x - 145 - btnL / 2, y + 220, btnL, 50); 
         roll.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  

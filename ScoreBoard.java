@@ -1,4 +1,3 @@
-import javax.lang.model.util.ElementScanner14;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Button;
@@ -7,17 +6,21 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;  
 
 public class ScoreBoard{
+    // stores the scores of the upper/lower sections and the total score
     private int totalScore;
     private int totalScUp;
-    private int bonus;
+    private int bonus;          // bonus if upper section score is >=63
     private int totalScLow;
-    private int Ybonus;
+    private int Ybonus;         // bonus if the player gets more than one yahtzee
 
+    // stores the buttons that the player presses to score
     private ArrayList<Button> upperButtons = new ArrayList<Button>();
-    private ArrayList<Button> lowerButtons = new ArrayList<Button>(); //dothis
+    private ArrayList<Button> lowerButtons = new ArrayList<Button>(); 
 
+    // the frame that contains the entire interface
     private JFrame frame;
 
+    // displays the scores on the scoreboard
     private JLabel labelScoreUp1;
     private JLabel labelScoreBonus;
     private JLabel labelScoreUp2;
@@ -26,12 +29,14 @@ public class ScoreBoard{
     private JLabel labelScoreUp;
     private JLabel labelScoreTotal;
 
+    // stores the number of sectiosn that haven't been scored 
     private int sectionsLeft;
-    private int sectionsLeftUp;
+    private int sectionsLeftUp;     // used to check when to calculate the upper section bonus
 
-    private int x; // position of the score card
-    private boolean myTurn;
+    private int x;      // position of the score card (default 0, only changes if there is a second player)
+    private boolean myTurn;   // used in multiplayer
 
+    // constructor 
     public ScoreBoard(){
         sectionsLeft = 13;
         sectionsLeftUp = 6;
@@ -43,26 +48,6 @@ public class ScoreBoard{
         Ybonus = 0;
         x = 0;
         myTurn = true;
-    }
-
-    public JFrame getFrame(){
-        return frame;
-    }
-
-    public void setFrame(JFrame f){
-        frame = f;
-    }
-
-    public void setX(int n){
-        x = n;
-    }
-
-    public void setTurn(boolean b){
-        myTurn = b;
-    }
-
-    public boolean getTurn(){
-        return myTurn;
     }
 
     // uses RECURSION to create new buttons and a new frame when the "restart" button is pressed
@@ -88,6 +73,7 @@ public class ScoreBoard{
         });
     }
 
+    // sets up the frame of the scoreboard
     public void createFrame(){
         frame = new JFrame();        
         frame.setTitle("Yahtzee!"); 
@@ -98,9 +84,10 @@ public class ScoreBoard{
         frame.getContentPane().setBackground(Color.WHITE);
     }
 
+    // sets up the entire interface
     public void createBoard(){
 
-        // labels
+        // labels that display the images of the yahtzee score card
         ImageIcon icon = new ImageIcon("/workspace/FinalProjectGUI/yahtzeeLEFT.jpg");
         ImageIcon icon2 = new ImageIcon("/workspace/FinalProjectGUI/yahtzeeTop.jpg");
         //left image
@@ -112,7 +99,7 @@ public class ScoreBoard{
         Dimension size2 = top.getPreferredSize(); //Gets the size of the image
         top.setBounds(x + 250, 0, size2.width, size2.height); //Sets the location of the image
 
-        // sets up labels
+        // sets up labels that display scores
         labelScoreUp1 = new JLabel(Integer.toString(totalScUp));
         labelScoreBonus = new JLabel(Integer.toString(bonus));
         labelScoreUp2 = new JLabel(Integer.toString(totalScUp));
@@ -123,61 +110,63 @@ public class ScoreBoard{
 
 
         // buttons
-        x += size1.width;
-        int y = 112;
-        int BWidth = 41;
-        int BLength = 53;
+        x += size1.width;       // puts position of the buttons to the right of the score card
+        int y = 112;            // y position below the top part of the score card
+        int BWidth = 41;        // desired width of the buttons
+        int BLength = 53;       // desired length of the buttons
         
+        // creates the buttons
         for (int i = 1; i <= 6; i++){
             final int temp = i;
-            Button button1 = new Button("score");  
-            button1.setBounds(x, y, BLength, BWidth); 
-            // action on click
+            Button button1 = new Button("score");           // creates button
+            button1.setBounds(x, y, BLength, BWidth);       // sets location of the button
+            
+            // sets button to calculate score when clicked 
             button1.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){                     
-                    // if the button has not been pressed
+                    // displays score if the button has not been pressed and dice have been rolled
                     if (button1.getLabel().equals("score") && YahtzeeDice.getCanScore() && myTurn){
-                        int tempScore = getScoreUpper(temp);  
-                        totalScUp += tempScore;
+                        int tempScore = getScoreUpper(temp);   // calculates the score of the section that was clicked
+                        // updates the values of the scores 
+                        totalScUp += tempScore;         
                         totalScore += tempScore;
                         sectionsLeft -= 1;
                         sectionsLeftUp -= 1;
-                        updateScUp();
 
-                        // display score
-                        button1.setLabel(Integer.toString(tempScore));
+                        // displays the new scores
+                        updateScUp();    // total scores
+                        button1.setLabel(Integer.toString(tempScore));   // individual button 
 
+                        // resets the dice
                         YahtzeeDice.setCanScore(false);
                         YahtzeeDice.setRollsRemaining(3);
                         YahtzeeDice.resetKeep();
                         DiceInterface.updateRollBtn();
-
-                        // transparent button ++
-
                     }
                 }  
             }); 
-
-            upperButtons.add(button1);
-            frame.add(button1);
-            y += BWidth;
+            upperButtons.add(button1);   // adds button to the ArrayList of buttons 
+            frame.add(button1);     // adds button to the interface
+            y += BWidth;    // increases the y pos of the next button so they will line up 
         }
 
-        // total/bonus 1st section
+        // sets location of upper section score labels 
         int lblWidth = 35;
-        labelScoreUp1.setBounds(x + 22, y, BLength, lblWidth);
+        labelScoreUp1.setBounds(x + 22, y, BLength, lblWidth);   // Total Score upper before bonus
         y += lblWidth;
-        labelScoreBonus.setBounds(x + 22, y, BLength, lblWidth);
+        labelScoreBonus.setBounds(x + 22, y, BLength, lblWidth); // bonus score
         y += lblWidth;
-        labelScoreUp2.setBounds(x + 22, y, BLength, lblWidth);
+        labelScoreUp2.setBounds(x + 22, y, BLength, lblWidth);   // Total Score upper after bonus
         y += lblWidth;
 
         y += 128 - lblWidth * 3;
 
+        
         int BWidth2 = 35;
+        // creates lower buttons 
         for (int i = 1; i <= 7; i++){
             Button button1 = new Button("score");  
-            button1.setBounds(x, y, BLength, BWidth2); 
+            button1.setBounds(x, y, BLength, BWidth2);      // location of the buttons
             final int temp = i;
 
             button1.addActionListener(new ActionListener(){  
@@ -208,7 +197,7 @@ public class ScoreBoard{
             y += BWidth2;
         }
 
-        // yahtzee bonus 
+        // label for yahtzee bonus and the total scores 
         int lblLength2 = 28;
         labelScoreYBonus.setBounds(x + 22, y, BLength, 46);
         y += 48;
@@ -218,10 +207,9 @@ public class ScoreBoard{
         y += lblLength2;
         labelScoreTotal.setBounds(x + 22, y, BLength, lblLength2);
         
-        
+        // adds all the components to the frame
         frame.add(left);
         frame.add(top);
-
         frame.add(labelScoreUp1);
         frame.add(labelScoreBonus);
         frame.add(labelScoreUp2);
@@ -229,10 +217,10 @@ public class ScoreBoard{
         frame.add(labelScoreUp);
         frame.add(labelScoreLow);
         frame.add(labelScoreTotal);
-
         frame.setVisible(true);
     }
 
+    // creates the dice buttons and the roll button
     public void createDiceBtn(){
         Button firstRoll = new Button("Roll!");  
         firstRoll.setBounds(1427, 765, 180, 50); 
@@ -247,10 +235,12 @@ public class ScoreBoard{
         });
     }
 
+    // calculates the score of a upper section button 
     public int getScoreUpper(int btnNum){
         return YahtzeeDice.calcUpper(btnNum);
     }
 
+    // calculates the score of a lower section button 
     public int getScoreLower(int btnNum){
         if (btnNum == 1){
             return YahtzeeDice.calcThreeKind();
@@ -268,10 +258,6 @@ public class ScoreBoard{
             return YahtzeeDice.calcChance();
         }
         return 0;
-    }
-
-    public int getTotalScore(){
-        return totalScore;
     }
 
     public void setScoreUp(int n){
@@ -319,9 +305,27 @@ public class ScoreBoard{
         updateScTotal();
     }
 
+    public int getTotalScore(){
+        return totalScore;
+    }
 
+    public JFrame getFrame(){
+        return frame;
+    }
 
+    public void setFrame(JFrame f){
+        frame = f;
+    }
 
+    public void setX(int n){
+        x = n;
+    }
 
-    
+    public void setTurn(boolean b){
+        myTurn = b;
+    }
+
+    public boolean getTurn(){
+        return myTurn;
+    }
 }
