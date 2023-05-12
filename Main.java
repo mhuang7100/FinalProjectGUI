@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args){
         System.out.print("\033[H\033[2J");
-        System.out.println("Welcome to Yahtzee! You have 3 rolls and may score each section by clicking the 'score' button once per game. You may keep a dice by clicking it. Press RESTART to start a new game.");
+        System.out.println("Welcome to Yahtzee! You have 3 rolls and may score each section by clicking the 'score' button once per game. You may keep a dice by clicking it. Press roll to start! Press RESTART to start a new game.");
         System.out.println("SinglePlayer or Multiplayer? (1 / 2)");
 
         // if the player doesn't select 1 or 2 the question is repeated
